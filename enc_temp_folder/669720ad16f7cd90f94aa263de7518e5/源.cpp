@@ -5,7 +5,7 @@ int main()
 {
 	string s;
 	cin >> s;
-	cout << s << endl;
+	cout << s ;
 
 	while (cin >> s)//windowsÏÂctrl+z·µ»Øfalse
 		cout << s << endl;
