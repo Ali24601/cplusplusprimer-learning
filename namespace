@@ -1,0 +1,49 @@
+namespace Exercise {
+	int ivar = 0;
+	double dvar = 0;
+	const int limit = 1000;
+}
+int ivar = 0;
+//1
+
+//using 声明
+//using Exercise::ivar;//这条声明导致ivar多次声明，编译出错
+//using Exercise::dvar;
+//using Exercise::limit;
+
+//using 指示
+//using namespace Exercise;//把Exercise的所有成员引入全局作用域
+						//这条指示导致ivar不明确，
+						//但是可以使用::ivar以及Exercise::ivar分别访问2个同名变量
+						//using 指示引发的二义性错误只有在使用了冲突名字的地方才能被发现
+void main()
+{
+	//2
+
+	//using 声明
+	using Exercise::ivar;//这条声明不会出错
+	using Exercise::dvar;//Exercise::dvar;重定义：多次初始化
+	using Exercise::limit;
+
+	//using 指示
+	//using namespace Exercise;//把Exercise的所有成员引入全局作用域，不会导致下面的dvar声明重定义
+						//这条指示导致ivar不明确，
+						//但是可以使用::ivar以及Exercise::ivar分别访问2个同名变量
+						//using 指示引发的二义性错误只有在使用了冲突名字的地方才能被发现
+	double dvar = 3.14;
+	int iobj = limit + 1;
+	//int ivar=0;
+	++ivar;
+	++::ivar;
+}
+
+
+
+//using声明将名字直接放入出现using声明的作用域，好像using声明是命名空间成员的局部别名一样，
+//这种声明是局部化的，名字仅仅在using声明被包含的作用域有效；
+//在声明包含的作用域内定义同名变量会导致多次声明
+
+//using指示：using指示使得特定命名空间的所有名字可见，从using指示点开始(这点同using声明一致)，
+//对名字可以不加限定符使用，直到包含using指示的作用域的末尾；
+//using指示具有将命名空间成员提升到包含命名空间本身和usin指示的最近作用域的效果；
+//在指示包含的作用域内定义同名变量(>﹏<) 不!!!!!!!!!!!会导致多次声明
