@@ -1,0 +1,55 @@
+//p719 练习18.28
+//VMI中使用不加前缀限定符直接访问
+//B定义了x
+//D1,D2都没定义的x，则x被解析为B成员
+//D1或D2定义x，就解释为派生类x
+//D1、D2同时定义x，有二义性，不能直接访问x
+#include <iostream>
+using namespace std;
+struct Base
+{
+public:
+	void bar(int) {};
+	virtual ~Base() = default;
+protected:
+	int ival;
+};
+class D1 :virtual public Base
+{
+public:
+	void bar(char) {};
+	void foo(char) {};
+protected:
+	char cval;
+};
+class D2 :virtual public Base
+{
+public:
+	void foo(int) {};
+protected:
+	int ival;
+	int cval;
+};
+class VMI :public D1,public D2
+{
+public:
+	VMI() :D1(), D2()
+	{
+		ival;
+		D2::bar(2);
+		char a = 'x';
+		bar(a);
+		D1::foo(a);
+		D2::foo(a);
+		//foo(a);二义性
+		D1::cval=a;
+		D2::cval = 0;
+		//cval; 二义性
+
+	}
+};
+int main()
+{
+	VMI vmi;
+	return 0;
+}
