@@ -1,0 +1,77 @@
+//p715 练习18.25
+#include <iostream>
+using namespace std;
+class Base1
+{
+public:
+	virtual ~Base1()
+	{
+		cout << "Base1:: ~Base1()" << endl;
+	}
+	virtual void print()
+	{
+		cout << "Base1::print()" << endl;
+	}
+};
+class Base2
+{
+public:
+	virtual ~Base2() 
+	{
+		cout << "Base2:: ~Base2()" << endl;
+	}
+	virtual void print()
+	{
+		cout << "Base2::print()" << endl;
+	}
+};
+class D1 :public Base1
+{
+public:
+	virtual ~D1()
+	{
+		cout << "D1:: ~D1()" << endl;
+	}
+	virtual void print()
+	{
+		cout << "D1::print()" << endl;
+	}
+};
+class D2 :public Base2
+{
+public:
+	virtual ~D2()
+	{
+		cout << "D2:: ~D2()" << endl;
+	}
+	virtual void print()
+	{
+		cout << "D2::print()" << endl;
+	}
+};
+class MI :public D1,public D2
+{
+public:
+	virtual ~MI()
+	{
+		cout << "MI:: ~MI()" << endl;
+	}
+	virtual void print()
+	{
+		cout << "MI::print()" << endl;
+	}
+};
+int main()
+{
+	Base1 *pb1 = new MI;
+	Base2 *pb2 = new MI;
+	D1 *pd1 = new MI;
+	D2 *pd2 = new MI;
+	pb1->print();
+	pd1->print();
+	pd2->print();
+	delete pb2;
+	delete pd1;
+	delete pd2;
+	return 0;
+}
