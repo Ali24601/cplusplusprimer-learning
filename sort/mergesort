@@ -1,0 +1,42 @@
+//归并排序
+class MergeSort {
+public:
+	void mergearray(int *A, int begin, int mid, int end, int *copy)
+	{
+		int p = begin;
+		int q = mid;
+		int k = p;
+		while (p < mid&&q < end)
+		{
+			if (A[p] <= A[q])
+			{
+				copy[k++] = A[p++];
+			}
+			else
+				copy[k++] = A[q++];
+		}
+		for (; p < mid;)
+			copy[k++] = A[p++];
+		for (; q < end;)
+			copy[k++] = A[q++];
+	}
+	void mergesort(int *A, int begin, int end, int *copy)
+	{
+		if (end-begin>1)
+		{
+			int mid = (begin + end) / 2;
+			mergesort(copy, begin, mid, A);
+			mergesort(copy, mid , end, A);
+			mergearray(copy, begin, mid, end, A);
+		}
+	}
+	int* mergeSort(int* A, int n) {
+		if (!A || n <= 0)
+			return NULL;
+		int *copy = new int[n];
+		memcpy(copy,A,sizeof(int)*n);
+		mergesort(A, 0, n, copy);
+		delete copy;
+		return A;
+	}
+};
