@@ -1,0 +1,74 @@
+//堆排序
+class HeapSort {
+public:
+	void swap(int &a, int &b)
+	{
+		int c = a;
+		a = b;
+		b = c;
+	}
+	void pop_heap(int *A, int n, int hole)
+	{
+		int left = hole * 2 + 1;
+		int right = hole * 2 + 2;
+		int maxid = hole;
+		if (left >= n)
+			return;
+		if (left<n)
+			maxid = left;
+		if (right<n&&A[right]>A[maxid])
+			maxid = right;
+		if (maxid != hole)
+		{
+			swap(A[maxid], A[hole]);
+			pop_heap(A, n, maxid);
+		}
+	}
+	void pop_heap(int *A, int n)
+	{
+		while (n > 1)
+		{
+			swap(A[0], A[n - 1]);
+			_adjust_heap(A, --n, 0);
+		}
+	}
+	void _adjust_heap(int *A, int n, int holeIndex)
+	{
+		int holeValue = A[holeIndex];
+		int secondChild = holeIndex * 2 + 2;
+		while (secondChild < n)
+		{
+			if (A[secondChild] < A[secondChild - 1])
+				--secondChild;
+			if (holeValue >= A[secondChild])
+				break;
+			A[holeIndex] = A[secondChild];
+			holeIndex = secondChild;
+			secondChild = 2 * (secondChild + 1);
+		}
+		if (secondChild == n)
+		{
+			--secondChild;
+			if (holeValue >= A[secondChild])
+				;
+			else
+			{
+				A[holeIndex] = A[secondChild];
+				holeIndex = secondChild;
+			}
+		}
+		A[holeIndex] = holeValue;
+	}
+	void make_heap(int *A, int n)
+	{
+		for (int i = (n - 2) / 2; i >= 0; --i)
+		{
+			_adjust_heap(A, n, i);
+		}
+	}
+	int* heapSort(int* A, int n) {
+		make_heap(A, n);
+		pop_heap(A, n);
+		return A;
+	}
+};
