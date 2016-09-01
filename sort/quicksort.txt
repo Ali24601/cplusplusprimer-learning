@@ -1,0 +1,30 @@
+//¿ìËÙÅÅĞò
+class QuickSort {
+public:
+	int* partition(int *A, int n)
+	{
+		//partition
+		int *begin = A;
+		int *end = A + n;
+		int key = *begin;
+		while (end - begin>1)
+		{
+			while ((end - begin>1) && *(end - 1) >= key)
+				--end;
+			*begin = *(end - 1);
+			while ((end - begin>1) && *begin <= key)
+				++begin;
+			*(end - 1) = *begin;
+		}
+		*begin = key;
+		return begin;
+	}
+	int* quickSort(int* A, int n) {
+		if (!A || n <= 1)
+			return NULL;
+		int *mid = partition(A, n);
+		quickSort(A, mid - A);
+		quickSort(mid + 1, n -1 - int(mid - A));
+		return A;
+	}
+};
