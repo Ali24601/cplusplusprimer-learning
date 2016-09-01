@@ -1,0 +1,20 @@
+class ShellSort {
+public:
+    int* shellSort(int* A, int n) {
+        for(int scape=n/2;scape>0;--scape)
+            {
+            for(int j=scape;j<n;j+=scape)
+                {
+                int k=j;
+                while(k>=scape&&A[k-scape]>A[k])
+                    {
+                    int temp=A[k];
+                    A[k]=A[k-scape];
+                    A[k-scape]=temp;
+                    k-=scape;
+                }
+            }
+        }
+        return A;
+    }
+};
