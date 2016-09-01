@@ -1,0 +1,25 @@
+class InsertionSort {
+public:
+    void swap(int *a,int *b)
+        {
+        int c=*a;
+        *a=*b;
+        *b=c;
+    }
+    int* insertionSort(int* A, int n) {
+        if(!A||n<=0)
+            return NULL;
+        if(n==1)
+            return A;
+        for(int i=1;i<n;++i)
+            {
+            int j=i;
+            while(j>0&&A[j]<A[j-1])
+                {
+                swap(A+j,A+j-1);
+                --j;
+            }             
+        }
+        return A;
+    }
+};
