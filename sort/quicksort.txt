@@ -1,4 +1,4 @@
-//¿ìËÙÅÅĞò
+//å¿«é€Ÿæ’åº
 class QuickSort {
 public:
 	int* partition(int *A, int n)
