@@ -1,0 +1,61 @@
+class RadixSort {
+public:
+    int power(int base,int e)
+        {
+        int ans=1;
+        for(int i=0;i<e;++i)
+            ans*=base;
+        return ans;
+    }
+    int maxbit(int data[], int n) //辅助函数，求数据的最大位数
+    {
+        int d = 1; //保存最大的位数
+        int p = 10;
+        for(int i = 0; i < n; ++i)
+        {
+            while(data[i] >= p)
+            {
+                p *= 10;
+                ++d;
+            }
+        }
+        return d;
+    }
+    void radixSort(int data[],int n,int copy[],int radix)
+        {
+        if(n<=1||radix==0)
+            return;
+        int j,k;
+        int count[10];
+        memset(count,0x00,sizeof(count));
+        for(j = 0; j < n; j++)
+        {
+            k = (data[j] / radix) % 10; //统计每个桶中的记录数
+            count[k]++;
+        }
+        for(j = 1; j < 10; j++)
+            count[j] = count[j - 1] + count[j]; //将tmp中的位置依次分配给每个桶
+        for(j = n - 1; j >= 0; j--) //将所有桶中记录依次收集到tmp中
+        {
+            k = (data[j] / radix) % 10;
+            copy[count[k] - 1] = data[j];
+            count[k]--;
+        }
+        for(j = 0; j < n; j++) //将临时数组的内容复制到data中
+            data[j] = copy[j];
+        radix = radix / 10;
+        for(j=0;j<9;++j)
+            radixSort(data+count[j],count[j+1]-count[j],copy+count[j],radix);
+        radixSort(data+count[j],n-count[j],copy+count[j],radix);
+    }
+    int* radixSort(int data[], int n) //基数排序
+    {
+        int d = maxbit(data, n);
+        int *tmp = new int[n];
+        int i, j, k;
+        int radix = power(10,d-1);
+        radixSort(data,n,tmp,radix);
+        delete[]tmp;
+        return data;
+    }
+};
