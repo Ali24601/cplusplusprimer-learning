@@ -1,0 +1,75 @@
+class ScaleSort {
+public:
+    bool cmp(int &a,int &b)
+        {
+        return a<b;
+    }
+    void swap(int &a, int &b)
+    {
+        int c = a;
+        a = b;
+        b = c;
+    }
+    void sort_heap(vector<int> &A, int k, vector<int> &ans)
+    {
+        int n=A.size();
+        while (k > 1)
+        {
+            ans.push_back(A.front());
+            if (n>k)
+            {
+                A[0] = A[k];
+                A.erase(A.begin() + k);
+                --n;
+                _adjust_heap(A, k, 0);
+            }
+            else
+            {
+                --n;
+                swap(A.front(), A[k - 1]);
+                _adjust_heap(A, --k, 0);
+            }
+        }
+        ans.push_back(A.front());
+    }
+    void _adjust_heap(vector<int> &A, int n, int holeIndex)
+    {
+        int holeValue = A[holeIndex];
+        int secondChild = holeIndex * 2 + 2;
+        while (secondChild < n)
+        {
+            if (cmp(A[secondChild - 1],A[secondChild]))
+                --secondChild;
+            if (!cmp(A[secondChild], holeValue))
+                break;
+            A[holeIndex] = A[secondChild];
+            holeIndex = secondChild;
+            secondChild = 2 * (secondChild + 1);
+        }
+        if (secondChild == n)
+        {
+            --secondChild;
+            if (!cmp(A[secondChild], holeValue))
+                ;
+            else
+            {
+                A[holeIndex] = A[secondChild];
+                holeIndex = secondChild;
+            }
+        }
+        A[holeIndex] = holeValue;
+    }
+    void make_heap(vector<int> &A, int n)
+    {
+        for (int i = (n - 2) / 2; i >= 0; --i)
+        {
+            _adjust_heap(A, n, i);
+        }
+    }
+    vector<int> sortElement(vector<int> A, int n, int k) {
+        vector<int> ans;
+        make_heap(A, k+1);
+        sort_heap(A, k+1, ans);
+        return ans;
+    }
+};
