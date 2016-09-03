@@ -1,3 +1,4 @@
+//最低位优先LSD (Least Significant Digit first)
 class RadixSort {
 public:
     int maxbit(int data[], int n) //辅助函数，求数据的最大位数
