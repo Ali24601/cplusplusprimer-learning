@@ -7,7 +7,9 @@ public:
 		a = b;
 		b = c;
 	}
-	void pop_heap(int *A, int n, int hole)
+	//recursively
+	//space complexity O(logn)
+	void _adjust_heap_2(int *A, int n, int hole)
 	{
 		int left = hole * 2 + 1;
 		int right = hole * 2 + 2;
@@ -21,17 +23,11 @@ public:
 		if (maxid != hole)
 		{
 			swap(A[maxid], A[hole]);
-			pop_heap(A, n, maxid);
+			_adjust_heap_2(A, n, maxid);
 		}
 	}
-	void pop_heap(int *A, int n)
-	{
-		while (n > 1)
-		{
-			swap(A[0], A[n - 1]);
-			_adjust_heap(A, --n, 0);
-		}
-	}
+	//non-recursively
+	//space complexity O(1)
 	void _adjust_heap(int *A, int n, int holeIndex)
 	{
 		int holeValue = A[holeIndex];
@@ -59,6 +55,14 @@ public:
 		}
 		A[holeIndex] = holeValue;
 	}
+	void sort_heap(int *A, int n)
+	{
+		while (n > 1)
+		{
+			swap(A[0], A[n - 1]);
+			_adjust_heap(A, --n, 0);
+		}
+	}
 	void make_heap(int *A, int n)
 	{
 		for (int i = (n - 2) / 2; i >= 0; --i)
@@ -68,7 +72,7 @@ public:
 	}
 	int* heapSort(int* A, int n) {
 		make_heap(A, n);
-		pop_heap(A, n);
+		sort_heap(A, n);
 		return A;
 	}
 };
