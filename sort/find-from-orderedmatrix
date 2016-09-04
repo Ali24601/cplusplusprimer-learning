@@ -1,0 +1,18 @@
+//有序矩阵查找
+class Finder {
+public:
+    bool findX(vector<vector<int> > mat, int n, int m, int x) {
+       	int startx=0;
+        int starty=m-1;
+        while(startx<n&&starty>=0)
+            {
+            if(mat[startx][starty]==x)
+                return true;
+            if(mat[startx][starty]>x)
+                --starty;
+            if(mat[startx][starty]<x)
+                ++startx;
+        }
+        return false;
+    }
+};
