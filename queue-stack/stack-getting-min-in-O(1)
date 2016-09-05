@@ -1,0 +1,30 @@
+包含min函数的栈
+定义栈的数据结构，请在该类型中实现一个能够得到栈最小元素的min函数。
+
+#include <assert.h>
+class Solution {
+public:
+    stack<int> valuestack;
+    stack<int> minstack;
+    void push(int value) {
+        valuestack.push(value);
+        if(minstack.empty())
+            minstack.push(value);
+        else if(!minstack.empty()&&value<=minstack.top())
+            minstack.push(value);
+    }
+    void pop() {
+        int poped=valuestack.top();
+        valuestack.pop();
+        if(poped==minstack.top())
+            minstack.pop();
+    }
+    int top() {
+        assert(!valuestack.empty());
+        return valuestack.top();
+    }
+    int min() {
+        assert(!minstack.empty());
+        return minstack.top();
+    }
+};
