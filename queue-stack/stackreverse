@@ -1,0 +1,40 @@
+栈的反转练习题
+实现一个栈的逆序，但是只能用递归函数和这个栈本身的pop操作来实现，而不能自己申请另外的数据结构。
+给定一个整数数组A即为给定的栈，同时给定它的大小n，请返回逆序后的栈。
+测试样例：
+[4,3,2,1],4
+返回：[1,2,3,4]
+
+class StackReverse {
+public:
+    int getbottom(stack<int> &A)
+        {
+         int now;
+         now=A.top();
+         A.pop();
+         if(A.empty())
+            return now;
+         int bottom=getbottom(A);
+         A.push(now);           
+         return bottom;
+        }
+    void reverse(stack<int> &A,vector<int> &result)
+        {
+         int now=getbottom(A);
+         if(!A.empty())
+            {
+             reverse(A,result);
+         }
+         A.push(now);
+        result.push_back(now);//输出
+        }
+    vector<int> reverseStack(vector<int> A, int n) 
+    {
+        stack<int> workstack;
+        for(int i=0;i<n;++i)
+            workstack.push(A[i]);
+        vector<int> result;
+        reverse(workstack,result);
+        return result;
+    }
+};
