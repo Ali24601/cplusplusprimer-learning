@@ -8,7 +8,11 @@ class SlideWindow {
 public:
     vector<int> slide(vector<int> arr, int n, int w) {
         vector<int> ans;
-        deque<int> maxIndex;//存放下标，对于任意n1<n2,有maxIndex[n1]<maxIndex[n2],arr[maxIndex[n1]]>=arr[maxIndex[n2]]
+        //存放下标，对于任意n1<n2,有maxIndex[n1]<maxIndex[n2],arr[maxIndex[n1]]>=arr[maxIndex[n2]]
+        //假如maxIndex有元素index_1,index_2,...,index_m(严格递增)
+        //则index_1为[MAX(0,i-w+1),i]~[index_1,i]中最大元素的下标
+        //则index_p(1<p<=m)为[index_(p-1)+1,i]~[index_p,i]中最大元素的下标
+        deque<int> maxIndex;
         for(int i=0;i<n;++i)
             {           
             if(i-w==maxIndex.front())//是否需要弹出第一个下标
