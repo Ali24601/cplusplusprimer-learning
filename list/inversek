@@ -1,0 +1,53 @@
+有一个单链表，请设计一个算法，使得每K个节点之间逆序，如果最后不够K个节点一组，则不调整最后几个节点。例如链表1->2->3->4->5->6->7->8->null，K=3这个例子。调整后为，3->2->1->6->5->4->7->8->null。因为K==3，所以每三个节点之间逆序，但其中的7，8不调整，因为只有两个节点不够一组。
+给定一个单链表的头指针head,同时给定K值，返回逆序后的链表的头指针。
+
+/*
+struct ListNode {
+    int val;
+    struct ListNode *next;
+    ListNode(int x) : val(x), next(NULL) {}
+};*/
+class KInverse {
+public:
+    pair<ListNode*,ListNode*> inverseK(ListNode *head,int k)
+        {
+        int i=0;
+        ListNode *p=head;
+        while(p&&i++<k)
+            p=p->next;
+        if(i<k)
+            return make_pair(head,(ListNode*)NULL);
+        p=head;
+        ListNode *q=p->next;
+        for(i=1;i<k;++i)
+            {
+            ListNode *after=q->next;
+            q->next=p;
+            p=q;
+            q=after;
+        }
+        head->next=q;
+        	return make_pair(p,head);
+    }
+    ListNode* inverse(ListNode* head, int k) {
+		// write code here
+		ListNode *newhead = NULL;
+		ListNode *newtail = NULL;
+		pair<ListNode*, ListNode*> sublist;
+		do
+		{
+			if (newhead == NULL)
+			{
+				sublist = inverseK(head, k);
+				newhead = sublist.first;
+			}
+			else
+			{
+				sublist = inverseK(newtail->next, k);
+				newtail->next = sublist.first;
+			}
+			newtail = sublist.second;
+		} while (newtail);
+		return newhead;
+	}
+};
