@@ -1,0 +1,58 @@
+请用递归方式实现二叉树的先序、中序和后序的遍历打印。
+给定一个二叉树的根结点root，请依次返回二叉树的先序，中序和后续遍历(二维数组的形式)。
+
+
+/*
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+    TreeNode(int x) :
+            val(x), left(NULL), right(NULL) {
+    }
+};*/
+
+class TreeToSequence {
+public:
+    void preorder(TreeNode* root,vector<int> &prelist)
+        {
+        if(root)
+            {
+            prelist.push_back(root->val);
+            preorder(root->left,prelist);
+            preorder(root->right,prelist);
+        }
+    }
+    void inorder(TreeNode* root,vector<int> &prelist)
+        {
+        if(root)
+            {
+            inorder(root->left,prelist);
+            prelist.push_back(root->val);    
+            inorder(root->right,prelist);
+        }
+    }
+    void postorder(TreeNode* root,vector<int> &prelist)
+        {
+        if(root)
+            {            
+            postorder(root->left,prelist);
+            postorder(root->right,prelist);
+            prelist.push_back(root->val);
+        }
+    }
+    vector<vector<int> > convert(TreeNode* root) {
+        // write code here
+        vector<int> prelist;
+        preorder(root,prelist);
+        vector<int> inlist;
+        inorder(root,inlist);
+        vector<int> postlist;
+        postorder(root,postlist);
+        vector<vector<int>> ans;
+        ans.push_back(prelist);
+        ans.push_back(inlist);
+        ans.push_back(postlist);
+        return ans;
+    }
+};
