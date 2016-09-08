@@ -1,0 +1,94 @@
+请用非递归方式实现二叉树的先序、中序和后序的遍历打印。
+给定一个二叉树的根结点root，请依次返回二叉树的先序，中序和后续遍历(二维数组的形式)。
+
+/*
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+    TreeNode(int x) :
+            val(x), left(NULL), right(NULL) {
+    }
+};*/
+ 
+class TreeToSequence {
+public:
+    vector<int> preorder(TreeNode* root)
+        {
+        vector<int> prelist;
+        if(!root)
+            return prelist;
+        stack<TreeNode *>trace;
+        trace.push(root);
+        while(!trace.empty())
+            {
+            TreeNode *now=trace.top();
+            trace.pop();
+            prelist.push_back(now->val);
+            if(now->right)
+                trace.push(now->right);
+            if(now->left)
+                trace.push(now->left);
+        }
+        return prelist;
+    }
+     
+    vector<int> inorder(TreeNode* root)
+        {
+        vector<int> inlist;
+        if(!root)
+            return inlist;
+        stack<TreeNode *>trace;
+        TreeNode* cur=root;
+        while(!trace.empty()||cur)
+            {
+            while(cur)
+                {
+                trace.push(cur);
+                cur=cur->left;
+            }
+            TreeNode* now=trace.top();
+            trace.pop();
+            inlist.push_back(now->val);
+            cur=now->right;
+        }
+        return inlist;
+    }
+     
+    vector<int> postorder(TreeNode* root)
+        {
+        vector<int> postlist;
+        if(!root)
+            return postlist;
+        stack<TreeNode *>trace;
+        stack<TreeNode *>ans;
+        trace.push(root);
+        while(!trace.empty())
+            {
+            TreeNode *now=trace.top();
+            trace.pop();
+            if(now->left)
+                trace.push(now->left);
+            if(now->right)
+                trace.push(now->right);
+            ans.push(now);
+        }
+        while(!ans.empty())
+            {
+            postlist.push_back(ans.top()->val);
+            ans.pop();
+        }
+        return postlist;
+    }
+    vector<vector<int> > convert(TreeNode* root) {
+        // write code here
+        vector<int> prelist=preorder(root);
+        vector<int> inlist=inorder(root);
+        vector<int> postlist=postorder(root);
+        vector<vector<int>> ans;
+        ans.push_back(prelist);
+        ans.push_back(inlist);
+        ans.push_back(postlist);
+        return ans;
+    }
+};
