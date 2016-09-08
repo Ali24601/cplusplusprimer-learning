@@ -1,0 +1,39 @@
+有一棵二叉树，请设计一个算法判断这棵二叉树是否为平衡二叉树。
+给定二叉树的根结点root，请返回一个bool值，代表这棵树是否为平衡二叉树。
+
+
+/*
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+    TreeNode(int x) :
+            val(x), left(NULL), right(NULL) {
+    }
+};*/
+#define ABS(a,b) ((a)<(b)?(b)-(a):(a)-(b))
+#define MAX(a,b) ((a)<(b)?(b):(a))
+class CheckBalance {
+public:
+    bool check(TreeNode *root,int &height)
+        {
+        if(!root)
+            {
+            height=0;
+            return true;
+        }
+        int left;
+        int right;
+        if(check(root->left,left)&&check(root->right,right)&&ABS(left,right)<=1)
+            {
+            height=MAX(left,right)+1;
+            return true;
+        }
+        return false;
+    }
+    bool check(TreeNode* root) {
+        // write code here
+        int height;
+        return check(root,height);
+    }
+};
