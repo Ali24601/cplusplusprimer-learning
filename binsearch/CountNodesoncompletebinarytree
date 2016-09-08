@@ -1,0 +1,40 @@
+完全二叉树计数练习题
+给定一棵完全二叉树的根节点root，返回这棵树的节点个数。如果完全二叉树的节点数为N，请实现时间复杂度低于O(N)的解法。
+给定树的根结点root，请返回树的大小。
+
+/*
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+    TreeNode(int x) :
+            val(x), left(NULL), right(NULL) {
+    }
+};*/
+
+class CountNodes {
+public:
+    int NumOnKdepth(int depth)
+        {
+        return (1l<<depth)-1;
+    }
+    int depth(TreeNode *root)
+        {
+        int depth=0;
+        while(root)
+            {
+            ++depth;
+            root=root->left;
+        } 
+        return depth;
+    }
+    int count(TreeNode* root) {
+        // write code here
+        if(!root)
+            return 0;
+        if(depth(root->left)==depth(root->right))//左子树满
+            return NumOnKdepth(depth(root->left))+1+count(root->right);
+        else//右子树满
+            return NumOnKdepth(depth(root->right))+1+count(root->left);
+    }
+};
