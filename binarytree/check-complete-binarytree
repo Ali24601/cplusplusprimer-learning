@@ -1,0 +1,46 @@
+有一棵二叉树,请设计一个算法判断它是否是完全二叉树。
+给定二叉树的根结点root，请返回一个bool值代表它是否为完全二叉树。树的结点个数小于等于500。
+设计思路：
+对于完全二叉树，它除了最后一层的右边缺少一部分节点，上面所有层以及缺少部分的左边都是满的。
+可以采用层遍历的方式遍历二叉树。采用非递归实现。每次遍历到一个节点时，把它的左右节点压入队列（不判断是否为空）
+在找到第一个空节点之后，置firsthole为true。如果后续遍历到非空节点，则返回false。
+全部遍历完则返回true。
+/*
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+    TreeNode(int x) :
+            val(x), left(NULL), right(NULL) {
+    }
+};*/
+
+class CheckCompletion {
+public:
+    bool chk(TreeNode* root) {
+        // write code here
+        if(!root)
+            return true;
+        queue<TreeNode *>nodequeue;
+        nodequeue.push(root);
+        bool firsthole=false;
+        while(!nodequeue.empty())
+            {
+            TreeNode *now=nodequeue.front();
+            nodequeue.pop();
+            if(!now)
+                {
+                if(!firsthole)
+                    firsthole=true;
+            }
+            else
+                {
+                if(firsthole)
+                    return false;
+                nodequeue.push(now->left);
+                nodequeue.push(now->right);
+            }
+        }
+        return true;
+    }
+};
