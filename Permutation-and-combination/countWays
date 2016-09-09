@@ -1,0 +1,24 @@
+在XxY的方格中，以左上角格子为起点，右下角格子为终点，每次只能向下走或者向右走，请问一共有多少种不同的走法
+给定两个正整数int x,int y，请返回走法数目。保证x＋y小于等于12。
+测试样例：
+2,2
+返回：2
+
+class Robot {
+public:
+    int fib(int n)
+        {
+        int ans=1;
+        for(int i=1;i<=n;++i)
+            ans*=i;
+        return ans;
+    }
+    int C(int m,int n)
+        {
+        return fib(m)/fib(n)/fib(m-n);
+    }
+    int countWays(int x, int y) {
+        // write code here
+        return C(x+y-2,x-1);
+    }
+};
