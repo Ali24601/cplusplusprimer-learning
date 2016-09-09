@@ -1,0 +1,42 @@
+有一棵二叉树，其中所有节点的值都不一样,找到含有节点最多 的搜索二叉子树,并返回这棵子树的头节点.
+给定二叉树的头结点root，请返回所求的头结点,若出现多个节点最多的子树，返回头结点权值最大的。
+
+class MaxSubtree {
+public:
+	struct searchhelper
+	{
+		int min;
+		int max;
+		int num;
+		TreeNode *head;
+		searchhelper(int m, int n, int number = 0, TreeNode *h = NULL) :min(m), max(n), num(number), head(h) {};
+	};
+	searchhelper getmaxsubtree(TreeNode *root)
+	{
+		if (!root)
+			return searchhelper(0, 0);
+		searchhelper leftside = getmaxsubtree(root->left);
+		searchhelper rightside = getmaxsubtree(root->right);
+
+		if ((leftside.head == root->left && ((!leftside.head) || leftside.max<root->val)) && \
+			(rightside.head == root->right && ((!rightside.head) || rightside.min>root->val)))
+		{
+			int min = ((leftside.head) ? leftside.min : root->val);
+			int max = ((rightside.head) ? rightside.max : root->val);
+			return searchhelper(min, max, leftside.num + rightside.num + 1, root);
+		}
+		else
+		{
+			bool selectleft = true;
+			if (leftside.num<rightside.num)
+				selectleft = false;
+			else if (leftside.num == rightside.num&&leftside.head->val<rightside.head->val)
+				selectleft = false;
+			return selectleft ? leftside : rightside;
+		}
+	}
+	TreeNode* getMax(TreeNode* root) {
+		// write code here
+		return getmaxsubtree(root).head;
+	}
+};
