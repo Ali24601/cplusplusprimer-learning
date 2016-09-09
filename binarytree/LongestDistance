@@ -1,0 +1,33 @@
+树上最远距离练习题
+
+从二叉树的节点A出发，可以向上或者向下走，但沿途的节点只能经过一次，当到达节点B时，路径上的节点数叫作A到B的距离。
+对于给定的一棵二叉树，求整棵树上节点间的最大距离。
+给定一个二叉树的头结点root，请返回最大距离。保证点数大于等于2小于等于500.
+
+/*
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+    TreeNode(int x) :
+            val(x), left(NULL), right(NULL) {
+    }
+};*/
+#define MAX(a,b) ((a)>(b)?(a):(b))
+class LongestDistance {
+public:
+    pair<int,int> longest(TreeNode *root)
+        {
+        if(!root)
+            return {0,0};
+        pair<int,int> leftside=longest(root->left);
+        pair<int,int> rightside=longest(root->right);
+        int depth=MAX(leftside.first,rightside.first)+1;
+        int length=MAX(MAX(leftside.second,rightside.second),leftside.first+rightside.first+1);
+        return make_pair(depth,length); 
+    }
+    int findLongest(TreeNode* root) {
+        // write code here
+        return longest(root).second;
+    }
+};
