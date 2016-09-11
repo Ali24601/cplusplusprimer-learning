@@ -1,0 +1,59 @@
+给定一个字符串s，你可以从中删除一些字符，使得剩下的串是一个回文串。如何删除才能使得回文串最长呢？
+输出需要删除的字符个数。
+
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+class LCS {
+public:
+    int max(int a,int b)
+        {
+        return a>b?a:b;
+    }
+    int findLCS(string A, int n, string B, int m) {
+        // write code here
+        vector<vector<int>> sheet;
+        sheet.push_back(vector<int>());
+        for(int j=0;j<m;++j)
+            {
+            if(A[0]==B[j])
+                break;
+            else
+                sheet[0].push_back(0);
+            }
+        sheet[0].resize(m,1);
+        int shown=0;
+        for(int i=1;i<n;++i)
+            {
+            sheet.push_back(vector<int>(m));
+            if(A[i]==B[0])
+                {
+                shown=1;
+            }
+            sheet[i][0]=shown;
+        }
+        for(int i=1;i<n;++i)
+            for(int j=1;j<m;++j)
+            {
+            int a=max(sheet[i-1][j],sheet[i][j-1]);
+            if(A[i]==B[j])
+                a=max(a,sheet[i-1][j-1]+1);
+            sheet[i][j]=a;
+        }
+        return sheet[n-1][m-1];
+    }
+};
+int main()
+    {
+    LCS lcs;
+    string str1;
+    while(cin>>str1)
+        {
+        string str2=str1;
+        reverse(str2.begin(),str2.end());
+        int common=lcs.findLCS(str1,str1.size(), str2, str2.size());
+        cout<<str1.size()-common<<endl;
+    }
+    return 0;
+}
