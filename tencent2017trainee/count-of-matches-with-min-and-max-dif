@@ -1,0 +1,61 @@
+小Q今天在上厕所时想到了这个问题：有n个数，两两组成二元组，差最小的有多少对呢？差最大呢？
+
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#define ABS(a,b) ((a)<(b)?(b)-(a):(a)-(b))
+using namespace std;
+int main()
+    {
+    int N;
+    while(cin>>N)
+        {
+        vector<int> li;
+        int temp;
+        int difmin=0x3f3f;
+        int countmin=0;
+        for(int i=0;i<N;++i)
+            {
+            cin>>temp;
+            li.push_back(temp);
+            }
+        sort(li.begin(),li.end());
+        for(int i=0;i<li.size()-1;++i)
+            {
+            int temp=ABS(li[i],li[i+1]);
+            if(temp<difmin)
+                {
+                difmin=temp;
+            }
+        }
+        for(int i=0;i<li.size()-1;++i)
+            {
+            for(int j=i+1;j<li.size();++j)
+                {
+                int temp=ABS(li[i],li[j]);
+                if(temp==difmin)
+                    ++countmin;
+                else
+                    break;
+            }
+        }
+        int countmax1=1;
+        for(int i=0;i!=li.size()-1;++i)
+            {
+            if(li[i]==li[i+1])
+                ++countmax1;
+            else
+                break;   
+        }
+        int countmax2=1;
+        for(int i=li.size()-1;i>0;--i)
+            {
+            if(li[i]==li[i-1])
+                ++countmax2;
+            else
+                break;
+        }
+         
+        cout<<countmin<<' '<<countmax2*countmax1<<endl;
+        }  
+    }
