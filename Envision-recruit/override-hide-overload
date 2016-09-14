@@ -1,0 +1,30 @@
+//c++(重载、覆盖、隐藏)
+
+class Base
+{
+public:
+	//重载
+	//同一个类中
+	//函数名相同，参数不同
+	//void f(int x)和void f(float x)
+	void f(int x) { cout << "Base::f(int) " << x << endl; }
+	virtual void f(float x) { cout << "Base::f(float) " << x << endl; }
+	virtual void g(void) { cout << "Base::g(void)" << endl; }
+};
+class Derived : public Base
+{
+public:
+	//覆盖（重写）
+	//派生类内函数如果在基类有个同名同参的虚函数，则为对此基类函数的覆盖（重写）。
+	//virtual void Derived::g(void)覆盖（重写）virtual void Base::g(void)
+	virtual void g(void) { cout << "Derived::g(void)" << endl; }
+
+	//隐藏
+	//派生类内函数会隐藏其基类中同名不同参的函数
+	//对于与其同名同参的基类函数，如果是虚函数则是覆盖（重写），不是虚函数则是隐藏。
+	//由于隐藏规则的存在，当基类有若干个同名不同参的虚函数时，派生类覆盖（重写）基类中的任意一个虚函数，
+	//都会隐藏其他同名函数。所以，如果想在派生类中覆盖（重写）一个基类虚函数，又想调用其他同名基类函数，
+	//必须把整个同名函数系类都定义一遍
+	//void Derived::f(int x)隐藏了void Base::f(int x)以及virtual void Base::f(float x)
+	void f(int x) { cout << "Derived::f(int) " << x << endl; }
+};
