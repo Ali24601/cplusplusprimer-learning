@@ -1,0 +1,43 @@
+1>  class Base	size(4):
+1>  	+---
+1>   0	| {vfptr}
+1>  	+---
+1>
+1>  Base::$vftable@:
+1>  	| &Base_meta
+1>  	|  0
+1>   0	| &Base::f
+1>   1	| &Base::g
+1>   2	| &Base::h
+1>
+1>  Base::f this adjustor: 0
+1>  Base::g this adjustor: 0
+1>  Base::h this adjustor: 0
+
+
+#include<iostream>  
+using namespace std;
+typedef void(*pFun)(void);
+class Base {
+public:
+	virtual void f() {
+		cout << "Base::f()" << endl;
+	}
+	virtual void g() {
+		cout << "Base::g()" << endl;
+	}
+	virtual void h() {
+		cout << "Base::h()" << endl;
+	}
+};
+int main() {
+	Base b;
+	//(long*)&b指向v_table, (long**)&b则指向v_table的第一个元素  
+	long** p = (long**)&b;
+	for (int i = 0; i != 3; ++i) {
+		// *p取到v_table的地址， *p+i 指到v_table第i个元素，
+		//*(*p+i)取出第i个函数指针，((Fun)*(*p+i))(); 转换并调用。  
+		((pFun)p[0][i])(); 
+	}
+	return 0;
+}
