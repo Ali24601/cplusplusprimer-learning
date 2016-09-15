@@ -4,7 +4,7 @@
 "1A2C3D4B56",10,"B1D23CA45B6A",12
 返回：6
 
-
+//space complexity O(m*n)
 class LCS {
 public:
     int max(int a,int b)
@@ -42,5 +42,37 @@ public:
             sheet[i][j]=a;
         }
         return sheet[n-1][m-1];
+    }
+};
+
+//space complexity O(min(m,n))
+class LCS {
+public:
+    int max(int a,int b)
+        {
+        return a>b?a:b;
+    }
+    int findLCS(string A, int n, string B, int m) {
+        // write code here
+        int **sheet=(int **)malloc(2*sizeof(int*));
+        for(int i=0;i<2;++i)
+            {
+            sheet[i]=(int*)malloc((m+1)*sizeof(int));
+            memset(sheet[i],0,(m+1)*sizeof(int));
+        }  
+        for(int i=0;i<n;++i)
+            for(int j=0;j<m;++j)
+            {
+            int index=i&1;
+            int a=max(sheet[!index][j+1],sheet[index][j]);
+            if(A[i]==B[j])
+                a=max(a,sheet[!index][j]+1);
+            sheet[index][j+1]=a;
+        }
+        int ans=sheet[(n-1)&0x1][m];
+        for(int i=0;i<2;++i)
+            free(sheet[i]);
+        free(sheet);
+        return ans;
     }
 };
