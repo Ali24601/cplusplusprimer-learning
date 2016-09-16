@@ -1,0 +1,155 @@
+1>  class MyClass	size(8):
+1>  	+---
+1>   0	| {vfptr}
+1>   4	| var
+1>  	+---
+1>
+1>  MyClass::$vftable@:
+1>  	| &MyClass_meta
+1>  	|  0
+1>   0	| &MyClass::fun
+1>
+1>  MyClass::fun this adjustor: 0
+1>
+1>  class MyClassA	size(20):
+1>  	+---
+1>   0	| {vfptr}
+1>   4	| {vbptr}
+1>   8	| varA
+1>  	+---
+1>  	+--- (virtual base MyClass)
+1>  12	| {vfptr}
+1>  16	| var
+1>  	+---
+1>
+1>  MyClassA::$vftable@MyClassA@:
+1>  	| &MyClassA_meta
+1>  	|  0
+1>   0	| &MyClassA::funA
+1>
+1>  MyClassA::$vbtable@:
+1>   0	| -4
+1>   1	| 8 (MyClassAd(MyClassA+4)MyClass)
+1>
+1>  MyClassA::$vftable@MyClass@:
+1>  	| -12
+1>   0	| &MyClassA::fun
+1>
+1>  MyClassA::fun this adjustor: 12
+1>  MyClassA::funA this adjustor: 0
+1>  vbi:	   class  offset o.vbptr  o.vbte fVtorDisp
+1>           MyClass      12       4       4 0
+1>
+1>  class MyClassB	size(20):
+1>  	+---
+1>   0	| {vfptr}
+1>   4	| {vbptr}
+1>   8	| varB
+1>  	+---
+1>  	+--- (virtual base MyClass)
+1>  12	| {vfptr}
+1>  16	| var
+1>  	+---
+1>
+1>  MyClassB::$vftable@MyClassB@:
+1>  	| &MyClassB_meta
+1>  	|  0
+1>   0	| &MyClassB::funB
+1>
+1>  MyClassB::$vbtable@:
+1>   0	| -4
+1>   1	| 8 (MyClassBd(MyClassB+4)MyClass)
+1>
+1>  MyClassB::$vftable@MyClass@:
+1>  	| -12
+1>   0	| &MyClassB::fun
+1>
+1>  MyClassB::fun this adjustor: 12
+1>  MyClassB::funB this adjustor: 0
+1>  vbi:	   class  offset o.vbptr  o.vbte fVtorDisp
+1>           MyClass      12       4       4 0
+1>
+1>  class MyClassC	size(36):
+1>  	+---
+1>   0	| +--- (base class MyClassA)
+1>   0	| | {vfptr}
+1>   4	| | {vbptr}
+1>   8	| | varA
+1>  	| +---
+1>  12	| +--- (base class MyClassB)
+1>  12	| | {vfptr}
+1>  16	| | {vbptr}
+1>  20	| | varB
+1>  	| +---
+1>  24	| varC
+1>  	+---
+1>  	+--- (virtual base MyClass)
+1>  28	| {vfptr}
+1>  32	| var
+1>  	+---
+1>
+1>  MyClassC::$vftable@MyClassA@:
+1>  	| &MyClassC_meta
+1>  	|  0
+1>   0	| &MyClassA::funA
+1>   1	| &MyClassC::funC
+1>
+1>  MyClassC::$vftable@MyClassB@:
+1>  	| -12
+1>   0	| &MyClassC::funB
+1>
+1>  MyClassC::$vbtable@MyClassA@:
+1>   0	| -4
+1>   1	| 24 (MyClassCd(MyClassA+4)MyClass)
+1>
+1>  MyClassC::$vbtable@MyClassB@:
+1>   0	| -4
+1>   1	| 12 (MyClassCd(MyClassB+4)MyClass)
+1>
+1>  MyClassC::$vftable@MyClass@:
+1>  	| -28
+1>   0	| &MyClassC::fun
+1>
+1>  MyClassC::fun this adjustor: 28
+1>  MyClassC::funB this adjustor: 12
+1>  MyClassC::funC this adjustor: 0
+1>  vbi:	   class  offset o.vbptr  o.vbte fVtorDisp
+1>           MyClass      28       4       4 0
+
+
+class MyClass
+{
+	int var;
+public:
+	virtual void fun()
+	{}
+};
+class MyClassA :virtual public MyClass
+{
+	int varA;
+public:
+	virtual void fun()
+	{}
+	virtual void funA()
+	{}
+};
+class MyClassB :virtual public MyClass
+{
+	int varB;
+public:
+	virtual void fun()
+	{}
+	virtual void funB()
+	{}
+};
+class MyClassC :public MyClassA, public MyClassB
+{
+	int varC;
+public:
+	virtual void fun()
+	{}
+	virtual void funB()
+	{}
+	virtual void funC()
+	{}
+};
