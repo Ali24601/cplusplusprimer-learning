@@ -1,0 +1,99 @@
+对于单继承下的虚函数表
+1.基类按照类中虚函数声明的顺序生成自己的虚函数表
+
+2.子类拷贝基类的虚函数表，同时按次数遍历子类的虚函数，
+如果是重写的基类虚函数，则把基类虚函数指针改为子类虚函数指针，
+如果是新增的虚函数，添加到子类虚函数表尾部
+
+#pragma  once
+
+#include <iostream>
+#include <stdio.h>
+
+namespace n2013_0724_2324
+{
+	class Base1
+	{
+	public:
+		virtual void vfoo1() {
+			std::cout << "In virtual void Base1::vfoo1()" << std::endl;
+		}
+		virtual void vfoo2() {
+			std::cout << "In virtual void Base1::vfoo2()" << std::endl;
+		}
+	};
+	class Derived : public Base1
+	{
+	public:
+		virtual void vfoo1() {
+			std::cout << "In virtual void Derived::vfoo1()" << std::endl;
+		}
+		virtual void vfoo3() {
+			std::cout << "In virtual void Derived::vfoo3()" << std::endl;
+		}
+	};
+
+	// 定义类成员函数指针
+	typedef void (Base1::*PBaseFun)();
+	typedef void (Derived::*PDerivedFun)();
+
+	typedef void(*PVoidFun)(Base1*);
+
+
+	/*
+	* @Func : 观察虚函数在虚表中的排列。包括：(1)
+	*
+	* @测试方法：找到虚函数表中函数的地址，调用之，观察输出结果，从而得知对应的函数是什么
+	*
+	* @测试结果及分析
+	Base1 *pb = new Base1...
+	Base1虚表中第0个索引的函数为：  In virtual void Base1::vfoo1()
+	Base1虚表中第1个索引的函数为：  In virtual void Base1::vfoo2()
+
+	Base1 *pb = new Derived...
+	Derived虚表中第0个索引的函数为：        In virtual void Derived::vfoo1()
+	Derived虚表中第1个索引的函数为：        In virtual void Base1::vfoo2()
+	Derived虚表中第2个索引的函数为：        In virtual void Derived::vfoo3()
+	* 从输出结果可以看出，Base1类的虚函数表含有2个虚函数，按声明顺序排列；Derived类的虚函数
+	* 表含有2个虚函数，按声明顺序排列
+	*
+	* @说明：在单继承结构中，只有一个虚函数表，表中的函数根据声明的顺序排列
+	*/
+	void test() {
+#define TEST1
+#ifdef TEST1
+		Base1 *pb;
+		int *pInt;
+		// 观察Base1的虚表中虚函数的排列位置
+		std::cout << "Base1 *pb = new Base1..." << std::endl;
+		pb = new Base1();
+		pInt = (int*)(*((int*)pb)); // 首先以int*的形式解析pb地址的值；然后将该值解析为int*
+									// 调用解析处理出来函数
+		std::cout << "Base1虚表中第0个索引的函数为：\t";
+		PVoidFun pvf = (PVoidFun)(pInt[0]);
+		pvf(pb);
+		std::cout << "Base1虚表中第1个索引的函数为：\t";
+		pvf = (PVoidFun)(pInt[1]);
+		pvf(pb);
+		std::cout << "\n";
+		// 观察Derived的虚表中虚函数的排列位置
+		std::cout << "Base1 *pb = new Derived..." << std::endl;
+		pb = new Derived;
+		pInt = (int*)(*((int*)pb)); // 首先以int*的形式解析pb地址的值；然后将该值解析为int*
+		std::cout << "Derived虚表中第0个索引的函数为：\t";
+		pvf = (PVoidFun)(pInt[0]);
+		pvf(pb);
+		std::cout << "Derived虚表中第1个索引的函数为：\t";
+		pvf = (PVoidFun)(pInt[1]);
+		pvf(pb);
+		std::cout << "Derived虚表中第2个索引的函数为：\t";
+		pvf = (PVoidFun)(pInt[2]);
+		pvf(pb);
+#endif // TEST1
+	}
+}
+int main()
+{
+	n2013_0724_2324::test();
+	return 0;
+}
