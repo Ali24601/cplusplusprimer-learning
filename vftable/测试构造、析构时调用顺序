@@ -1,0 +1,103 @@
+#include<iostream>
+#include<cstdlib>
+#include<cstdio>
+#include<string>
+using namespace std;
+//Function to show binary info of an object
+typedef unsigned char* pointer_type;
+void show_byte(pointer_type pointer, int length);
+void show_byte(pointer_type pointer, int length)
+{
+	cout << "address of object:" << hex << (int)pointer << endl;
+	cout << "var size in byte:" << dec << length << endl;
+	for (int i = 0; i<length; ++i)
+	{
+		cout << "|address: 0x" << hex << (int)(pointer + i) << " | value:0x" << (int)(*(pointer + i)) << " |" << endl;
+	}
+	cout << endl;
+}
+class Base
+{
+public:
+	Base()
+	{
+		cout << "In Base::constructor." << endl;
+		cout << "Constructing " << *m_pObj_Name << endl;
+		cout << "binary info:" << endl;
+		show_byte((pointer_type)this, sizeof(*this));
+	}
+	Base(const string& name) :
+		flag_var(0x12345678),
+		m_pObj_Name(new string(name))
+	{
+		cout << "In Base::constructor." << endl;
+		cout << "Constructing " << *m_pObj_Name << endl;
+		cout << "binary info:" << endl;
+		show_byte((pointer_type)this, sizeof(*this));
+	}
+	void Util()
+	{
+		virtual_func1();
+	}
+	virtual ~Base() { virtual_func1(); delete m_pObj_Name; }
+	const string& GetName()
+	{
+		return *(this->m_pObj_Name);
+	}
+private:
+	int flag_var;
+	string* m_pObj_Name;
+	virtual void pure_virtual_1() = 0;//pure virtual function
+	virtual void pure_virtual_2() = 0;//pure virtual function
+	virtual void virtual_func1()      //normal virtual function
+	{
+		cout << "virtual function in Base." << endl;
+	}
+};
+class Derived : public Base
+{
+public:
+	Derived(string name) : //initialize list
+						   //defined for testing invoke order of initialize list and base constructor
+		a("10"),
+		Base(name)
+	{
+		cout << "In Derived::constructor." << endl;
+		cout << "binary info:" << endl;
+		show_byte((pointer_type)this, sizeof(*this));
+	}
+	void Util()
+	{
+		virtual_func1();
+	}
+	virtual ~Derived() { virtual_func1(); }
+private:
+	virtual void pure_virtual_1() { printf("pure_virtual_1() in drived\n"); }
+	virtual void pure_virtual_2() { printf("pure_virtual_2() in drived\n"); }
+	virtual void virtual_func1()
+	{
+		cout << "virtual function in Derived." << endl;
+	}
+	//debug
+	string a;
+};
+int main()
+{
+	char buff1[1024];
+	char buff2[1024];
+	Derived* d1 = new(buff1) Derived("Derived_1");//placement new，借用别人申请的内存，租客
+	Base* b1 = d1;
+	cout << "After construct:" << d1->GetName() << endl;
+	show_byte((pointer_type)d1, sizeof(d1));
+	d1->Util();
+	b1->Util();
+	Derived* d2 = new(buff2) Derived("Derived_2");//placement new
+	Base* b2 = d2;
+	cout << "After construct:" << d2->GetName() << endl;
+	show_byte((pointer_type)d2, sizeof(d2));
+	d2->Util();
+	b2->Util();
+	d1->~Derived();//placement new 只需要析构对象，不能释放内存，因为内存是别人申请的
+	d2->~Derived();
+	return 0;
+}
