@@ -1,0 +1,55 @@
+/***************************************************
+给定一个升序序列，以及要求的和。输出每种可能的子序列
+输入
+10,1,4,6,9,10
+输出
+4 6
+1 9
+10
+***************************************************/
+#include<iostream>
+#include<algorithm>
+#include<sstream>
+#include<string>
+#include<vector>
+#include<iterator>
+using namespace std;
+void printallsumequals(vector<int> &list,int length,int sum, vector<int> &chosenindex)
+{
+	if (sum == 0)
+	{
+		for (int i = chosenindex.size()-1; i>=0; --i)
+			cout << list[chosenindex[i]] << ' ';
+		cout << endl;
+		return;
+	}	
+	while (length - 1>=0&&list[length - 1] > sum)
+		length--;
+	if (length <= 0)
+		return;
+	printallsumequals(list, length - 1, sum,chosenindex);
+	chosenindex.push_back(length - 1);
+	printallsumequals(list, length - 1, sum - list[length - 1],chosenindex);
+	chosenindex.pop_back();
+	return;
+}
+int main()
+{
+	string str;
+	while(getline(cin,str))
+	{
+		int sum;		
+		istringstream is(str);
+		is >> sum;
+		int temp;
+		vector<int> allnum;
+		while (is >> temp)
+			allnum.push_back(temp);
+		sort(allnum.begin(), allnum.end());
+		vector<int> listcopy;
+		unique_copy(allnum.begin(), allnum.end(), back_insert_iterator<vector<int> >(listcopy));
+		vector<int> chosenindex;
+		printallsumequals(listcopy, listcopy.size(), sum, chosenindex);
+	}
+	return 0;
+}
