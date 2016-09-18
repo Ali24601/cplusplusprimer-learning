@@ -1,0 +1,129 @@
+/***************************************************
+输入:n+1行
+n m p （n行，m列，cost为p）
+n*m 0\1矩阵
+输出
+是否可以在指定cost内走出去
+可以则输出最短cost的路径，否则输出"Not Found"
+***************************************************/
+#include<iostream>
+#include<vector>
+#include<deque>
+#include<stack>
+using namespace std;
+#define INF 0x3f3f3f3f
+struct node
+{
+	int x,y;
+	node* before = NULL;
+	bool visited = false;
+	int cost= INF;
+	node(int b,int c,bool visit) :x(b),y(c),visited(visit){};
+};
+bool Dijkstra(vector<vector<node>> &nodemaze,int beginx,int beginy,int endx,int endy,int left,int right,int up,int down,int Cost=-1)
+{
+	if (Cost == -1)
+		Cost = INF;//默认值-1表示不计算Cost
+	int n = nodemaze.size();
+	int m = nodemaze[0].size();
+	deque<node *> nodelist;
+	node *p = &nodemaze[beginx][beginy];
+	p->cost = 0;
+	if (!p->visited)
+		nodelist.push_back(p);
+	while (!nodelist.empty())
+	{
+		int index = 0;
+		int mincost = nodelist[0]->cost;
+		for (int i = 1; i < nodelist.size(); ++i)
+		{
+			if (nodelist[i]->cost < mincost)
+			{
+				index = i;
+				mincost = nodelist[i]->cost;
+			}
+		}
+		nodelist[index]->visited = true;
+		p = nodelist[index];
+		nodelist.erase(nodelist.begin() + index);
+		if (p->x == endx && p->y == endy)
+			break;
+		if (p->cost>Cost)
+			break;
+		if (p->x >= 1 && !nodemaze[p->x - 1][p->y].visited)
+			if (nodemaze[p->x - 1][p->y].cost > p->cost + up)
+			{
+				if (nodemaze[p->x - 1][p->y].cost == INF)
+					nodelist.push_back(&nodemaze[p->x - 1][p->y]);
+				nodemaze[p->x - 1][p->y].cost = p->cost + up;
+				nodemaze[p->x - 1][p->y].before = p;
+			}
+		if (p->x <n - 1 && !nodemaze[p->x + 1][p->y].visited)
+			if (nodemaze[p->x + 1][p->y].cost > p->cost + down)
+			{
+				if (nodemaze[p->x + 1][p->y].cost == INF)
+					nodelist.push_back(&nodemaze[p->x + 1][p->y]);
+				nodemaze[p->x + 1][p->y].cost = p->cost + down;
+				nodemaze[p->x + 1][p->y].before = p;
+			}
+		if (p->y >= 1 && !nodemaze[p->x][p->y - 1].visited)
+			if (nodemaze[p->x][p->y - 1].cost > p->cost + left)
+			{
+				if (nodemaze[p->x][p->y - 1].cost == INF)
+					nodelist.push_back(&nodemaze[p->x][p->y - 1]);
+				nodemaze[p->x][p->y - 1].cost = p->cost + left;
+				nodemaze[p->x][p->y - 1].before = p;
+			}
+		if (p->y < m - 1 && !nodemaze[p->x][p->y + 1].visited)
+			if (nodemaze[p->x][p->y + 1].cost > p->cost + right)
+			{
+				if (nodemaze[p->x][p->y + 1].cost == INF)
+					nodelist.push_back(&nodemaze[p->x][p->y + 1]);
+				nodemaze[p->x][p->y + 1].cost = p->cost + right;
+				nodemaze[p->x][p->y + 1].before = p;
+			}
+	}
+	p = &nodemaze[endx][endy];
+	if (!p->before)
+	{
+	    cout << "Not Found" << endl;
+	    return false;
+	}
+	else
+	{
+		stack<node*> outlist;
+		while (p)
+		{
+			outlist.push(p);
+			p = p->before;
+		}
+		while (!outlist.empty())
+		{
+			p = outlist.top();
+			cout << "[" << p->x << "," << p->y << "]";
+			outlist.pop();
+		}
+		cout << endl;
+		return true;
+	}
+}
+int main()
+{
+	int n, m, P;
+	while (cin >> n >> m >> P)
+	{
+		vector<vector<node>> nodemaze;
+		for (int i = 0; i < n; ++i)
+		{
+			nodemaze.push_back(vector<node>());
+			for (int j = 0; j < m; ++j)
+			{
+				int temp;
+				cin >> temp;
+				nodemaze.back().push_back(node(i, j, !temp));
+			}
+		}
+		Dijkstra(nodemaze, 0, 0, 0, m - 1,1,1,3,0, P);
+	}
+	return 0;
+}
