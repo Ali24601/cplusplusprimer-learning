@@ -1,0 +1,72 @@
+/******************************************
+给定一个压栈序列，输出所有不可能的出栈序列
+思路：
+step1.对压栈序列sort，并保存到序列outlist中去
+step2.对outlist做全排列，每次判断当前outlist是否为合法的弹出序列
+
+******************************************/
+#include<iostream>
+#include<algorithm>
+#include<sstream>
+#include<string>
+#include<stack>
+#include<vector>
+using namespace std;
+bool PossiblePopList(vector<int> &in, vector<int> &out)
+{
+    if(in.size()!=out.size())
+        return false;
+	int index = 0;
+	int indexout = 0;
+	int size = in.size();
+	stack<int> outstack;
+	while (index < size&&indexout < size)
+	{
+		//当前要弹出的元素out[indexout]不等于栈顶元素，压入
+		while (outstack.empty() || (index < size && out[indexout] != outstack.top()))
+		{
+			outstack.push(in[index++]);
+		}
+		//当前要弹出的元素out[indexout]等于栈顶元素，弹出
+		while (!outstack.empty()&& indexout < size&&outstack.top() == out[indexout])
+		{
+			++indexout;
+			outstack.pop();
+		}	
+	}
+	if (outstack.empty())
+		//有效的输出
+	{
+		cout << "VALID   ";
+		for (int i = 0; i < size; ++i)
+			cout << out[i] << ' ';
+		cout << endl;
+		return true;
+	}
+	else//无效的输出
+	{
+		cout << "INVALID ";
+		for (int i = 0; i < size; ++i)
+			cout << out[i] << ' ';
+		cout << endl;
+		return false;
+	}
+}
+int main()
+{
+	string str;
+	while(getline(cin,str))
+	{		
+		istringstream is(str);
+		int temp;
+		vector<int> allnum;
+		while (is >> temp)
+			allnum.push_back(temp);
+		vector<int> outlist(allnum);
+		sort(outlist.begin(), outlist.end());
+		do {
+			PossiblePopList(allnum, outlist);
+		} while (next_permutation(outlist.begin(), outlist.end()));
+	}
+	return 0;
+}
