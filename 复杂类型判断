@@ -1,0 +1,21 @@
+//定义一个数据类型，他是一个指针，指向了由10个指针构成的数组，
+//这十个指针是一个函数指针，它返回值bool参数为int
+
+#include <iostream> 
+using namespace std;
+typedef bool(*pFUN)(int);
+typedef  pFUN pFunArr[10];
+typedef  pFUN *ppFun;
+typedef  pFunArr *ppFunArr;
+//pFUN: bool(*)(int)
+//pFUN[10]: bool(*[10])(int)
+//pFUN指针：bool(**)(int)
+//pFUN[10]指针: bool(*(*)[10])(int)
+int main()
+{
+	cout << typeid(pFUN).name() << endl;
+	cout << typeid(pFunArr).name() << endl;
+	cout << typeid(ppFun).name() << endl;
+	cout << typeid(ppFunArr).name() << endl;
+	return 0;
+}
