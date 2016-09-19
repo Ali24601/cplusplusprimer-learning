@@ -1,0 +1,26 @@
+/**********************************************
+输出0597
+*********************************************/
+
+#include <iostream> 
+using namespace std;
+class Base
+{
+public:
+	Base(int i = 0) :a(i) { cout << a << endl; }
+private:
+	int a;
+};
+class Derived :public Base
+{
+public:
+	Derived(int bb) :b(bb){ cout << b << endl; }
+	Derived(int bb,int cc) :b(bb), Base(cc) { cout << b << endl; }
+private:
+	int b;
+};
+int main()
+{
+	Derived a(5), b(7,9);
+	return 0;
+}
