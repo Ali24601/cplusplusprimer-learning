@@ -1,0 +1,25 @@
+//总共调用5次string构造函数，依次为string("123"),Derived a实参构造形参，
+//Base(string(cc)),b(string(cc)),c(string(cc));
+//后面三次调用被优化为Base(cc),b(cc),c(cc)
+#include <iostream> 
+using namespace std;
+class Base
+{
+public:
+	Base(string i=0) :a(i) {}
+private:
+	string a;
+};
+class Derived :public Base
+{
+public:
+	Derived(string cc):c(string(cc)), Base(string(cc)),b(string(cc)){}
+private:
+	string b;
+	string c;
+};
+int main()
+{
+	Derived a(string("123"));
+	return 0;
+} 
