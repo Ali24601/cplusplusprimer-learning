@@ -1,0 +1,20 @@
+
+#include <iostream> 
+using namespace std;
+class Base
+{
+public: 
+	Base(int i) :a(i) {}
+private:
+	int a;
+};
+class Derived :public Base
+{
+private:
+	int b;
+};
+int main()
+{
+	Derived a;
+	return 0;
+}
