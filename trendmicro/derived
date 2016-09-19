@@ -1,3 +1,7 @@
+对于基类没有无参构造函数的情况，派生类必须显示书写构造函数，同时初始化列表中必须显示包括基类构造
+Derived(int cc):b(cc){} 错
+Derived(int cc):b(cc),Base(cc){} 对
+
 
 #include <iostream> 
 using namespace std;
