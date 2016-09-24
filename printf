@@ -1,0 +1,13 @@
+
+#include<stdio.h>
+int main()
+{
+  int arr[]={6,7,8,9,10};
+  int *ptr=arr;
+  *(ptr++)+=123;//129,[7],8,9,10
+  //printf("%d,%d\n ",*ptr,*(++ptr));   //88
+  //printf("%d,%d\n ",*(++ptr),*(++ptr));   //99
+  //printf("%d,%d\n ",*(ptr++),*(++ptr);   //89
+  //printf("%d,%d\n ",*(ptr++),*(ptr++);   //87
+  return 0;
+}
