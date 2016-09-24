@@ -1,3 +1,35 @@
+#include <iostream>
+using namespace std;
+class INT_PTR
+{
+public:
+	INT_PTR(int *a=0):ptr(a){}
+	int & operator*()
+	{
+		return *ptr;
+	}
+	INT_PTR &operator++()
+	{
+		++ptr;
+		return *this;
+	}
+	INT_PTR operator++(int)
+	{
+		INT_PTR temp(*this);
+		this->operator++();
+		return temp;
+	}
+private:
+	int *ptr;
+};
+int main()
+{
+	INT_PTR ptr = new int[5]{6,7,8,9,10};
+	printf("%d,%d\n ", *(++ptr), *(++ptr));//87
+	return 0;
+}
+
+
 
 #include<stdio.h>
 int main()
