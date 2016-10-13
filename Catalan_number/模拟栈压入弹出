@@ -1,0 +1,78 @@
+/*
+Input: int n
+Output: AllPath,PathNum
+Example
+Input 3
+	*
+	**
+	***
+output(1↓，0→)
+111000
+110100
+110010
+101100
+101010
+ALL PATH NUMBER:6
+*/
+#include<iostream>
+#include<stack>
+using namespace std;
+void printline(int *path, int length)
+{
+	for (int i = 0; i < length; ++i)
+	{
+		cout << path[i];
+	}
+	cout << endl;
+}
+void printpathrecurise(int *path, int &n, int &startx, stack<int> &sa,int &count)
+{
+	if (startx==n&&sa.empty())//到达终点
+	{
+		++count;//路径数+1
+		return printline(path-2*n, 2*n);
+	}	
+	if (startx<n)//往下走
+	{
+		++startx;
+		*path = 1;
+		++path;
+		sa.push(4);
+		printpathrecurise(path, n, startx, sa,count);
+		sa.pop();
+		--path;
+		--startx;//回退
+	}
+	if (!sa.empty())//往右走
+	{
+		*path = 0;
+		++path;
+		sa.pop();
+		printpathrecurise(path, n, startx, sa,count);
+		sa.push(4);
+		--path;
+	}
+}
+void PrintAllPath(int n)
+{
+	if (n <= 0)
+		return;
+	int *path = new int[2 * n];
+	memset(path, 0, sizeof(int) * 2 * n);
+	int startx = 0;
+	int index = 0;
+	int count = 0;
+	stack<int> sa;
+	printpathrecurise(path, n, startx, sa, count);
+	cout << "ALL PATH NUMBER:"<<count << endl;
+	delete []path;
+}
+int main()
+{
+	int N;
+	while (cin >> N)
+	{
+		PrintAllPath(N);
+	}
+	return 0;
+}
