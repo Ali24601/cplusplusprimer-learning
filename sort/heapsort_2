@@ -1,0 +1,46 @@
+class HeapSort {
+public:
+    void _adjust_heap(int *A,int holeIndex,int n)
+        {
+        int holeValue=A[holeIndex];
+        int secondChild=2*(holeIndex+1);
+        while(secondChild<n)
+            {
+            if(A[secondChild-1]>A[secondChild])
+                --secondChild;
+            if(A[secondChild]<=holeValue)
+                break;
+            A[holeIndex]=A[secondChild];
+            holeIndex=secondChild;
+            secondChild=2*(holeIndex+1);
+        }
+        if(secondChild==n)
+            {
+            --secondChild;
+            if(A[secondChild]>holeValue)
+                {
+                A[holeIndex]=A[secondChild];
+            	  holeIndex=secondChild;
+            }
+        }
+        A[holeIndex]=holeValue;
+    }
+    void make_heap(int *A,int n)
+        {
+        for(int i=(n-2)/2;i>=0;--i)
+            _adjust_heap(A,i,n);
+    }
+    void sort_heap(int *A,int n)
+        {
+        while(n>1)
+            {
+            std::swap(A[0],A[n-1]);
+            _adjust_heap(A,0,--n);
+        }
+    }
+    int* heapSort(int* A, int n) {
+        make_heap(A,n);
+        sort_heap(A,n);
+        return A;
+    }
+};
