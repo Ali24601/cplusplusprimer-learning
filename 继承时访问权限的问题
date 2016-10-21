@@ -1,0 +1,20 @@
+#include<iostream>
+using namespace std;
+class Base
+{
+public:
+	virtual void Get() { cout << "Base::Get()" << endl; };
+};
+class Derived:public Base
+{
+private:
+	virtual void Get() { cout << "Derived::Get()" << endl; };
+};
+int main()
+{
+	Base* p = new Derived;
+	p->Get();//通过公有的基类接口访问子类函数
+	Derived d;
+	d.Get();//子类函数为私有，不能访问
+	return 0;
+}
