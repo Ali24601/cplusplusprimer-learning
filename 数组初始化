@@ -1,0 +1,26 @@
+#include<iostream>
+#define STR "ABCDE"
+using namespace std;
+int main()
+{
+	int a = 2;
+	char A[3] = { 0 };
+	char B[4] = { 1 };
+	char C[4] = { 2,1 };
+	char D[5] = "ABC";
+	char E[5] = "\0";
+	char F[5] = "ABCD";
+	char G[6] = STR;
+	char H[6] = {  };
+	//char [2]
+	char K[] = "\0";
+	//char [1]
+	char L[] = "";
+
+	//error
+	////空初始值设定项对于带有未指定绑定的数组无效
+	//char I[] = {};
+	////"const char [4]" 类型的值不能用于初始化 "char [3]" 类型的实体
+	//char J[3] = "ABC";
+	return 0;
+}
