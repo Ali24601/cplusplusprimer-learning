@@ -16,7 +16,7 @@ public:
 		int maxid = hole;
 		if (left >= n)
 			return;
-		if (left<n)
+		if (left<n&&A[left]>A[maxid])
 			maxid = left;
 		if (right<n&&A[right]>A[maxid])
 			maxid = right;
