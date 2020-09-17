@@ -1,6 +1,6 @@
 /*INT_MAX	time use:9163ms
-分配一块堆内存，表示[primes[lastpeerid]*primes[lastpeerid],primes[lastpeerid+1]*primes[lastpeerid+1])直接的每个数是否可以被
-primes[0:lastpeerid]整除。与create_primestable.cpp相比，此处采用步进的方式，避免每次都判断是否被整除。用时约为前者的1%，内存多消耗5,203,320B(count的最大值)
+分配一块堆内存，表示[primes[lastpeerid]*primes[lastpeerid],primes[lastpeerid+1]*primes[lastpeerid+1])直接的每个数是否可以被primes[0:lastpeerid]整除。
+此处采用步进的方式，求得第一个能被primes[i]整除得数，然后每次步进primes[i]，减少了求余运算。与create_primestable.cpp相比，用时约为前者的1%，内存多消耗5,203,320B(count的最大值)
 */
 
 class Solution {
